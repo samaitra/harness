@@ -16,14 +16,12 @@ public class FolderScanner {
     Logger logger = LoggerFactory.getLogger(FolderScanner.class);
 
     protected FolderScanner() {
-
         config = new Config();
         config.loadConfigFile();
     }
 
 
     public static FolderScanner getInstance() {
-
         if (instance == null) {
             instance = new FolderScanner();
         }
@@ -31,16 +29,12 @@ public class FolderScanner {
     }
 
     public ArrayList<Test> scan(String module, String feature, String subfeature) {
-
-
-
             String testHome = config.configProperties.getProperty("tests.home");
             String path = testHome + "/" + module;
 
             String[] featureList = getSubFolderList(path);
 
             for (int i = 0; i < featureList.length; i++) {
-
                 if (!featureList[i].equals(".DS_Store") && featureList[i].equals(feature)) {
                     String featurePath = path + "/" + featureList[i];
                     scanFeature(module, featureList[i], featurePath, subfeature);
@@ -48,10 +42,7 @@ public class FolderScanner {
                 } else if (!featureList[i].equals(".DS_Store") && feature.equals("")) {
                     String featurePath = path + "/" + featureList[i];
                     scanFeature(module, featureList[i], featurePath, subfeature);
-
                 }
-
-
             }
 
         return testList;
@@ -62,19 +53,11 @@ public class FolderScanner {
         String[] subfeatureList = getSubFolderList(path);
         for (int j = 0; j < subfeatureList.length; j++) {
             if (!subfeatureList[j].equals(".DS_Store") && subfeatureList[j].equals(subfeature)) {
-
-
                 scanSubFeature(module, feature, subfeatureList[j]);
-
             } else if (!subfeatureList[j].equals(".DS_Store") && subfeature.equals("")) {
-
-
                 scanSubFeature(module, feature, subfeatureList[j]);
-
             }
-
         }
-
     }
 
     void scanSubFeature(String module, String feature, String subfeature) {

@@ -1,8 +1,7 @@
 package tests.website.common.constants;
 
 
-public class HomePageConstants
-{
+public class HomePageConstants {
     public static final String NewCarousel = "NewCarousel";
     public static final String CategoryNames = "CategoryNames";
     public static final String CategoryTab = "CategoryTab";

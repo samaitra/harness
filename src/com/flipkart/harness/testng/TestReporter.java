@@ -24,8 +24,7 @@ public class TestReporter implements IReporter {
     private int row, methodIndex, rowTotal;
     private boolean haveScreenShots  = false;
 
-    public void generateReport(List<XmlSuite> xml, List<ISuite> suites, String outdir)
-    {
+    public void generateReport(List<XmlSuite> xml, List<ISuite> suites, String outdir) {
         out = createWriter(outdir);
         startHTML(out);
         generateSuiteSummaryReport(suites);
@@ -36,11 +35,9 @@ public class TestReporter implements IReporter {
         out.close();
     }
 
-    protected PrintWriter createWriter(String outdir)
-    {
+    protected PrintWriter createWriter(String outdir) {
         PrintWriter writer = null;
-        try
-        {
+        try {
             new File(outdir).mkdir();
             writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(outdir, "report.html"))));
             FileInputStream inStream = new FileInputStream(new File("resources/style.css"));
@@ -60,15 +57,13 @@ public class TestReporter implements IReporter {
             if(folder.exists())
                 haveScreenShots = true;
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             logger.error("Output File", e);
         }
         return writer;
     }
 
-    protected void startHTML(PrintWriter out)
-    {
+    protected void startHTML(PrintWriter out) {
         out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
         out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
         out.println("\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
@@ -85,14 +80,12 @@ public class TestReporter implements IReporter {
         out.println("\t\t<div id='block' class='box'></div>");
     }
 
-    protected void stopHTML(PrintWriter out)
-    {
+    protected void stopHTML(PrintWriter out) {
         out.println("\t</body>");
         out.println("</html>");
     }
 
-    public void generateSuiteSummaryReport(List<ISuite> suites)
-    {
+    public void generateSuiteSummaryReport(List<ISuite> suites) {
         int qty_tests=0, qty_pass_m=0, qty_pass_s=0, qty_fail=0, qty_skipped=0;
         long startTime = Long.MAX_VALUE, endTime = Long.MIN_VALUE;
         startTable("summary_center", 1);
@@ -107,15 +100,12 @@ public class TestReporter implements IReporter {
         tableColumnStart("Excluded Groups");
         out.println("\t</tr>");
         NumberFormat format = new DecimalFormat("#,##0.0");
-        for(ISuite suite: suites)
-        {
-            if(suites.size()>1)
-            {
+        for(ISuite suite: suites) {
+            if(suites.size()>1) {
                 titleRow(suite.getName(), 7);
             }
             Map<String, ISuiteResult> tests = suite.getResults();
-            for(ISuiteResult r: tests.values())
-            {
+            for(ISuiteResult r: tests.values()) {
                 qty_tests++;
                 ITestContext overview = r.getTestContext();
                 startSummaryRow(overview.getName());
@@ -139,8 +129,7 @@ public class TestReporter implements IReporter {
                 out.println("\t</tr>");
             }
         }
-        if(qty_tests > 1)
-        {
+        if(qty_tests > 1) {
             out.println("<tr><td class='cell'>Total</td>");
             summaryCell(qty_pass_m, Integer.MAX_VALUE, "passed");
             summaryCell(qty_pass_s, Integer.MAX_VALUE, "passed");
@@ -152,8 +141,7 @@ public class TestReporter implements IReporter {
         out.println("</table>");
     }
 
-    private void startTable(String cssClass, int space)
-    {
+    private void startTable(String cssClass, int space) {
         out.println("<table cellspacing='"+space+"' "+ (cssClass!=null?"class='"+cssClass+"'":"border='1' align='center'")+">");
         row = 0;
     }
@@ -163,14 +151,12 @@ public class TestReporter implements IReporter {
         out.println("\t\t<th class='cell'>"+label+"</th>");
     }
 
-    private void titleRow(String label, int cq)
-    {
+    private void titleRow(String label, int cq) {
         out.println("<tr><th class='cell_background' colspan=\"" + cq + "\">" + label + "</th></tr>");
         row = 0;
     }
 
-    private void startSummaryRow(String label)
-    {
+    private void startSummaryRow(String label) {
         row++;
         out.println("\t\t<td class='cell'>"+label+"</td>");
     }
@@ -180,14 +166,12 @@ public class TestReporter implements IReporter {
         out.print("<td class='"+(isGood?"cell":style)+"'>" + v + "</td>");
     }
 
-    private void summaryCell(int v, int maxexpected, String style)
-    {
+    private void summaryCell(int v, int maxexpected, String style) {
         summaryCell(String.valueOf(v),v<=maxexpected, style);
         rowTotal += v;
     }
 
-    private void summaryCell(String [] val, String style)
-    {
+    private void summaryCell(String [] val, String style) {
         StringBuffer buffer = new StringBuffer();
         for(String str : val)
         {
@@ -196,8 +180,7 @@ public class TestReporter implements IReporter {
         summaryCell(buffer.toString(), true, style);
     }
 
-    private Collection<ITestNGMethod> getMethodSet(IResultMap tests)
-    {
+    private Collection<ITestNGMethod> getMethodSet(IResultMap tests) {
         List<ITestNGMethod> r = new ArrayList<ITestNGMethod>(tests.getAllMethods());
         Arrays.sort(r.toArray(new ITestNGMethod[r.size()]), new TestSorter());
         return r;
@@ -209,18 +192,15 @@ public class TestReporter implements IReporter {
         }
     }
 
-    private void generateMethodSummaryReport(List<ISuite> suites)
-    {
+    private void generateMethodSummaryReport(List<ISuite> suites) {
         methodIndex = 0;
         startResultSummaryTable("center");
-        for(ISuite suite: suites)
-        {
+        for(ISuite suite: suites) {
             if(suites.size()>1) {
                 titleRow(suite.getName(), 4);
             }
             Map<String, ISuiteResult> r = suite.getResults();
-            for(ISuiteResult r2: r.values())
-            {
+            for(ISuiteResult r2: r.values()) {
                 ITestContext testContext = r2.getTestContext();
                 String testName = testContext.getName();
                 resultSummary(testContext.getFailedConfigurations(), testName, "failed", " (configuration methods)");
@@ -234,24 +214,20 @@ public class TestReporter implements IReporter {
     }
 
     private void resultSummary(IResultMap tests, String testname, String style, String details) {
-        if (tests.getAllResults().size() > 0)
-        {
+        if (tests.getAllResults().size() > 0) {
             StringBuffer buff = new StringBuffer();
             String lastClassName = "";
             int mq = 0;
             int cq = 0;
-            for (ITestNGMethod method : getMethodSet(tests))
-            {
+            for (ITestNGMethod method : getMethodSet(tests)) {
                 row += 1;
                 methodIndex += 1;
                 ITestClass testClass = method.getTestClass();
                 String className = testClass.getName();
                 if (mq == 0)
                     titleRow(testname + " &#8212; " + style + details, 5);
-                if (!className.equalsIgnoreCase(lastClassName))
-                {
-                    if (mq > 0)
-                    {
+                if (!className.equalsIgnoreCase(lastClassName)) {
+                    if (mq > 0) {
                         cq += 1;
                         out.println("<tr><td class=\"" + style + "\" rowspan='"
                                 + mq + "'>" + lastClassName.substring(lastClassName.indexOf(".src.")+5) + buff);
@@ -263,8 +239,7 @@ public class TestReporter implements IReporter {
                 Set<ITestResult> resultSet = tests.getResults(method);
                 long end = Long.MIN_VALUE;
                 long start = Long.MAX_VALUE;
-                for (ITestResult testResult : tests.getResults(method))
-                {
+                for (ITestResult testResult : tests.getResults(method)) {
                     if (testResult.getEndMillis() > end)
                         end = testResult.getEndMillis();
                     if (testResult.getStartMillis() < start)
@@ -284,8 +259,7 @@ public class TestReporter implements IReporter {
                         + resultSet.size() + "</td><td class='"+style+"'>" + (end - start)
                         + "</td>" + "<td class='"+style+"'>" + ((style.equalsIgnoreCase("failed") && haveScreenShots)?"<div align='center'><a href='screenshots/" + name.toLowerCase() + ".jpg' style='text-decoration:none'><img src=\"screenshots/"+name.toLowerCase()+".jpg\" alt=\"screenshot\" width=\"50\" height=\"30\" class='image' onmouseover='showBigImage(this);' onmouseout='hideBigImage();' /></a></div>":"")+"</td></tr>");
             }
-            if (mq > 0)
-            {
+            if (mq > 0) {
                 cq += 1;
                 out.println("<tr>" + "<td  class=\"" + style + "\" rowspan=\"" + mq + "\">" + lastClassName.substring(lastClassName.indexOf(".src.")+5) + buff);
             }

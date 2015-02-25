@@ -28,25 +28,21 @@ public class JmeterRunner implements HarnessRunner {
     Logger logger = LoggerFactory.getLogger(JmeterRunner.class);
 
     public JmeterRunner() {
-
         config.loadConfigFile();
         jmeter = config.configProperties.getProperty("jmeter.home");
         testHome = config.configProperties.getProperty("tests.home");
         testReport = config.configProperties.getProperty("output");
         System.setProperty("jmeter.home",jmeter);
-
     }
 
     ArrayList<String> testList = new ArrayList<String>();
 
     public ArrayList<String> initialize(String module, String feature, String subfeature) {
-
         String testHome = config.configProperties.getProperty("tests.home");
         String path = testHome + "/" + module + "/" + feature + "/" + subfeature;
         File testDir = new File(path);
         if (testDir.list() != null) {
             String[] tests = testDir.list();
-
             for (int i = 0; i < tests.length; i++) {
                 if (tests[i].contains(".jmx")) {
                     testList.add(tests[i]);
@@ -71,7 +67,6 @@ public class JmeterRunner implements HarnessRunner {
           waitForTestComplete();
           test = JmeterResultsParser.parse(test,reportFile);
 
-
           db.addPerfResults(test, batchId, persist);
 
         }catch (Exception ex){
@@ -88,7 +83,6 @@ public class JmeterRunner implements HarnessRunner {
                 waitThread = thread;
                 break;
             }
-
         }
         if (waitThread != null) {
             try{

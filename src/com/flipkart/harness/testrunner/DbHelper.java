@@ -38,10 +38,8 @@ public class DbHelper {
     public void addPerfResults(Test test, UUID batchId, Boolean persist) {
 
         if(persist){
-
             connectDb();
             try {
-
                 String sql = "insert into perf(testName,samples,success,failures,minResponseTime,maxResponseTime,avgResponseTime,median,ninetiethPercentile,throughput,batchId,type,createdTime,module,feature,subfeature) values ('" + test.getName() +
                         "','" + test.getSamples() +
                         "','" + test.getSuccess() +
@@ -66,8 +64,6 @@ public class DbHelper {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
@@ -91,12 +87,9 @@ public class DbHelper {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection(dburl, username, password);
-
-
         } catch (Exception e) {
             System.out.println("Could not connect to database.");
             e.printStackTrace();
-
         }
     }
 
