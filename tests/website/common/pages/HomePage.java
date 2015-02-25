@@ -13,17 +13,8 @@ import com.flipkart.harness.utils.Locators;
 
 public class HomePage extends Common{
 
-
-    public boolean openHomePage()
-    {
+    public boolean openHomePage() {
         openPage(config.configProperties.getProperty("app.server"));
         return true;
     }
-
-
-
-
-
-
-
 }

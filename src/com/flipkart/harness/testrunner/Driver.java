@@ -65,7 +65,6 @@ public class Driver {
                 @Override
                 public void run() {
                     try {
-
                         for (Test t : tList) {
                             hr.execute(t, batchId, persist);
                         }

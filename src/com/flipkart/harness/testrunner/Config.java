@@ -12,9 +12,7 @@ public class Config {
     public static Properties configProperties = new Properties();
 
     public boolean loadConfigFile() {
-
         try {
-
             configProperties.load(new FileReader("conf/config.properties"));
 
         } catch (FileNotFoundException e) {
